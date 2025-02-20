@@ -56,7 +56,7 @@ pipeline {
         
         stage('Create Docker Image for Main') {
             when {
-                branch 'main'  // Run only for the main branch
+                branch 'main'  
             }
             steps {
                 script {
