@@ -1,8 +1,6 @@
 pipeline {
     agent { label 'build-node' }
     
-    environment {
-    }
 
     stages {
         stage('Checkstyle') {
