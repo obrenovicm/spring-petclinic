@@ -1,46 +1,44 @@
 pipeline {
     agent { label 'build-node' }
-    
 
     stages {
         stage('Checkstyle') {
             when {
-                changeRequest()  
+                githubPullRequest()  // Triggered by PR events
             }
             steps {
                 script {
-                    
                     sh './gradlew checkstyleMain'
                 }
                 archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml'
             }
         }
-        
+
         stage('Test') {
             when {
-                changeRequest() 
+                githubPullRequest()
             }
             steps {
                 script {
-                    sh './gradlew clean test'
+                    sh './gradlew test'
                 }
             }
         }
 
         stage('Build') {
             when {
-                changeRequest()  
+                githubPullRequest()
             }
             steps {
                 script {
-                    sh './gradlew clean build -x test'
+                    sh './gradlew build -x test'
                 }
             }
         }
 
         stage('Create Docker Image for Change Request') {
             when {
-                changeRequest()  
+                githubPullRequest()
             }
             steps {
                 script {
@@ -53,10 +51,10 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Create Docker Image for Main') {
             when {
-                branch 'main'  
+                branch 'main'  // Only for the main branch
             }
             steps {
                 script {
@@ -70,5 +68,4 @@ pipeline {
             }
         }
     }
-
 }
