@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh './gradlew test'
+                    sh './gradlew clean test'
                 }
             }
         }
@@ -33,7 +33,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh './gradlew build -x test'
+                    sh './gradlew clean build -x test'
                 }
             }
         }
