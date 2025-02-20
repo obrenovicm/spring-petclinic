@@ -2,6 +2,13 @@ pipeline {
     agent { label 'build-node' }
 
     stages {
+
+        stage ('checkout'){
+          steps{
+            git branch: 'jenkins', url: 'https://github.com/obrenovicm/spring-petclinic.git'
+          }
+        }
+        
         stage('Checkstyle') {
             when {
                 changeRequest()  // Use changeRequest for PR builds
