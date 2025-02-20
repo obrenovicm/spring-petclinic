@@ -12,7 +12,7 @@ pipeline {
                     
                     sh './gradlew checkstyleMain'
                 }
-                archiveArtifacts allowEmptyArchive: true, artifacts: '**/build/reports/checkstyle/*.xml'
+                archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml'
             }
         }
         
