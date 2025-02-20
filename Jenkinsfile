@@ -11,7 +11,7 @@ pipeline {
         
         stage('Checkstyle') {
             when {
-                changeRequest()  // Use changeRequest for PR builds
+                changeRequest() 
             }
             steps {
                 script {
@@ -23,7 +23,7 @@ pipeline {
 
         stage('Test') {
             when {
-                changeRequest()  // Use changeRequest for PR builds
+                changeRequest()  
             }
             steps {
                 script {
@@ -34,7 +34,7 @@ pipeline {
 
         stage('Build') {
             when {
-                changeRequest()  // Use changeRequest for PR builds
+                changeRequest()  
             }
             steps {
                 script {
@@ -45,7 +45,7 @@ pipeline {
 
         stage('Create Docker Image for Change Request') {
             when {
-                changeRequest()  // Use changeRequest for PR builds
+                changeRequest()  
             }
             steps {
                 script {
@@ -61,7 +61,7 @@ pipeline {
 
         stage('Create Docker Image for Main') {
             when {
-                branch 'main'  // Only for the main branch
+                branch 'main'  
             }
             steps {
                 script {
