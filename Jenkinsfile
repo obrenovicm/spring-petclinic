@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkstyle') {
             when {
-                githubPullRequest()  // Triggered by PR events
+                changeRequest()  // Use changeRequest for PR builds
             }
             steps {
                 script {
@@ -16,7 +16,7 @@ pipeline {
 
         stage('Test') {
             when {
-                githubPullRequest()
+                changeRequest()  // Use changeRequest for PR builds
             }
             steps {
                 script {
@@ -27,7 +27,7 @@ pipeline {
 
         stage('Build') {
             when {
-                githubPullRequest()
+                changeRequest()  // Use changeRequest for PR builds
             }
             steps {
                 script {
@@ -38,7 +38,7 @@ pipeline {
 
         stage('Create Docker Image for Change Request') {
             when {
-                githubPullRequest()
+                changeRequest()  // Use changeRequest for PR builds
             }
             steps {
                 script {
