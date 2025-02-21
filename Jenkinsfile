@@ -27,7 +27,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh './gradlew test'
+                    sh './gradlew clean test'
                 }
             }
         }
