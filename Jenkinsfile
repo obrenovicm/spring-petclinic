@@ -1,24 +1,29 @@
 pipeline {
     agent { label 'build-node' }
-    
 
     stages {
+
+        stage ('checkout'){
+          steps{
+            git branch: 'jenkins', url: 'https://github.com/obrenovicm/spring-petclinic.git'
+          }
+        }
+        
         stage('Checkstyle') {
             when {
-                changeRequest()  
+                changeRequest() 
             }
             steps {
                 script {
-                    
                     sh './gradlew checkstyleMain'
                 }
                 archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml'
             }
         }
-        
+
         stage('Test') {
             when {
-                changeRequest() 
+                changeRequest()  
             }
             steps {
                 script {
@@ -53,10 +58,10 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Create Docker Image for Main') {
             when {
-                branch 'main'  // Run only for the main branch
+                branch 'main'  
             }
             steps {
                 script {
@@ -70,5 +75,4 @@ pipeline {
             }
         }
     }
-
 }
