@@ -15,6 +15,7 @@ services:
       - jenkins-data:/var/jenkins_home
     ports:
       - "2375:2375"
+      - "2376:2376"
     command: --storage-driver overlay2
 
   jenkins-master:
@@ -50,9 +51,9 @@ services:
       - jenkins-docker-certs:/certs/client:ro
     
     environment:
-      - DOCKER_HOST=tcp://docker:2375
+      - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/client
-      - DOCKER_TLS_VERIFY=0
+      - DOCKER_TLS_VERIFY=1
 
 
 networks:
