@@ -1,15 +1,35 @@
 services:
 
   petclinic:
-    image: multi-petclinic
+    image: petclinic-exporter:latest
     ports:
       - 8080:8080
+      - 8000:8000
 
-  postgres:
-    image: postgres:17.0
+  # postgres:
+  #   image: postgres:17.0
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     - POSTGRES_PASSWORD=petclinic
+  #     - POSTGRES_USER=petclinic
+  #     - POSTGRES_DB=petclinic
+
+  prometheus:
+    image: prom/prometheus
     ports:
-      - "5432:5432"
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
     environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
+     - GF_PLUGINS_PREINSTALL=grafana-clock-panel
+    ports:
+     - 3000:3000
+    volumes:
+     - 'grafana_storage:/var/lib/grafana'
+volumes:
+  grafana_storage: {}
