@@ -1,0 +1,64 @@
+services:
+
+  jenkins-docker:
+    image: docker:27.5.1-dind
+    container_name: jenkins-docker
+    privileged: true
+    networks:
+      jenkins:
+        aliases:
+          - docker  # This sets the alias for the 'jenkins-docker' service
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+    volumes:
+      - jenkins-docker-certs:/certs/client
+      - jenkins-data:/var/jenkins_home
+    ports:
+      - "2375:2375"
+    command: --storage-driver overlay2
+
+  jenkins-master:
+    image: myjenkins-blueocean:2.492.1-1
+    container_name: jenkins-master
+    restart: on-failure
+    networks:
+      jenkins:
+        aliases:
+          - docker
+
+    volumes:
+      - jenkins-data:/var/jenkins_home
+
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+      - "80:80"
+      - "443:443"
+
+
+  jenkins-agent:
+    image: myjenkins-blueocean:2.492.1-1
+    container_name: jenkins-agent
+    restart: on-failure
+    networks:
+      jenkins:
+        aliases:
+          - docker
+    
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client:ro
+    
+    environment:
+      - DOCKER_HOST=tcp://docker:2375
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+
+
+networks:
+  jenkins:
+    driver: bridge
+
+volumes:
+  jenkins-docker-certs:
+  jenkins-data:
